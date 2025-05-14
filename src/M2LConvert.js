@@ -18,7 +18,8 @@ import { condenseSpaces } from './conversion.js'
 
 export function M2LConvert(str,lp,rp, conversiontarget){
     //preprocessing for inline structure
-console.debug("M2LConvert(str,lp,rp, conversiontarget)", str,lp,rp, conversiontarget);
+str = str.replace(/\&/, "🎯");
+console.log("M2LConvert(str,lp,rp, conversiontarget)", str,lp,rp, conversiontarget);
     for (let key of translateTable.getAllMultiLine()) { // iterate through dictionary
         let index = str.indexOf(key.slice(0, -1)+"(");
         while (index != -1){
@@ -66,9 +67,10 @@ console.debug("M2LConvert(str,lp,rp, conversiontarget)", str,lp,rp, conversionta
 console.debug("  ++  ++  ++  ++  ++  ++  ++  ++  ++  ++ ");
 console.debug("top of loop  ",splitStr);
 console.debug("params = ",params);
+console.log("params = ",params);
 //console.debug("thisEnvironment = ",thisEnvironment);
 
-      if (splitStr[0].trim() == "" && !params.includes("system") && !params.includes("derivation")) {console.info("skipping empty string");  splitStr.shift();  continue }  // may need this as an indicator in some cases ??
+      if (splitStr[0].trim() == "" && !params.includes("system") && !params.includes("derivation") && !params.includes("multiline")) {console.info("skipping empty string");  splitStr.shift();  continue }  // may need this as an indicator in some cases ??
    // sort of a hack, but working toward better multiline expressions
       if (params.length > 0 && params.includes("caseEnvironment")) {
         let thisLine = splitStr[0];
@@ -80,7 +82,7 @@ console.debug("params = ",params);
             splitStr[0] = thisLine;
         }
 console.debug("thisLinePieces", thisLinePieces);
-      } else if (params.length > 0 && (params.includes("system") || params.includes("derivation")) ) {
+      } else if (params.length > 0 && (params.includes("system") || params.includes("derivation") ) ) {
         let thisLine = splitStr[0];
         // a if the next line is not blank, it is a ontinuation of the current line
         while (splitStr.length > 1 && splitStr[1].trim() != "") {
@@ -95,7 +97,7 @@ console.debug("thisLinePieces", thisLinePieces);
             while (thisLinePieces.length >= 3) { newthirdpiece = thisLinePieces.pop() + newthirdpiece }
             thisLinePieces[2] = newthirdpiece;
         }
-        if (thisLinePieces.length != 3) { console.error("invalid system/derivation line", thisLine, "with pieces", thisLinePieces) }
+        if (thisLinePieces.length != 3) { console.error("invalid system/derivation/multiline line", thisLine, "with pieces", thisLinePieces) }
         else {
 
 // in the derivation case, we have to treat the first line differently
@@ -104,11 +106,49 @@ console.debug("thisLinePieces", thisLinePieces);
                 thisLine = "derivationline(" + thisLinePieces[1].trim() + ")(" + thisLinePieces[2].trim() + ")";
             } else {
                 thisLine = "systemline(" + thisLinePieces[0].trim() + ")(" + thisLinePieces[1].trim() + ")(" + thisLinePieces[2].trim() + ")";
+//   multilineline 
             }
             splitStr[0] = thisLine;
         }
 console.debug("thisLine", thisLine, "thisLinePieces", thisLinePieces);
       }
+        else if (params.length > 0 && (params.includes("multiline") || params.includes("multiline") ) ) {
+        let thisLine = splitStr[0];
+        // a if the next line is not blank, it is a ontinuation of the current line
+        while (splitStr.length > 1 && splitStr[1].trim() != "") {
+            thisLine += splitStr[1];
+            splitStr.splice(1,1);
+        }
+  // move the relations to dictionary
+        let thisLinePieces = thisLine.split(/(🎯).*?/);
+console.log("thisLine", thisLine, "thisLinePieces", thisLinePieces);
+        if (thisLinePieces[1] == "🎯") { thisLinePieces[1] = "" }
+        // maybe more than one relation on the line
+        if (thisLinePieces.length > 3) {
+            let newthirdpiece = "";
+            while (thisLinePieces.length >= 3) { newthirdpiece = thisLinePieces.pop() + newthirdpiece }
+            thisLinePieces[2] = newthirdpiece;
+        }
+        if (thisLinePieces.length != 3) { console.error("invalid system/derivation/multiline line", thisLine, "with pieces", thisLinePieces) }
+        else {
+
+// in the derivation case, we have to treat the first line differently
+// the implementation below assumes too much
+  //          if (thisLinePieces[0].trim() == "") {
+  //              thisLine = "multilineline(" + thisLinePieces[1].trim() + ")(" + thisLinePieces[2].trim() + ")";
+  //          } else {
+                thisLine = "multilineline(" + thisLinePieces[0].trim() + ")(" + thisLinePieces[1].trim() + ")(" + thisLinePieces[2].trim() + ")";
+  //          }
+            splitStr[0] = thisLine;
+        }
+console.debug("thisLine", thisLine, "thisLinePieces", thisLinePieces);
+      } 
+
+
+
+
+
+
 
    // this is the key parsing step, when one meaningful string is parsed into a tree
 // 4/1/23 added .trim(); may need to rethink, if the indentation level is relevant
@@ -126,9 +166,10 @@ console.debug("temp");
             } else if (conversiontarget == "Speech") {
                 latexLine = " case " + latexLine
             }
-        } else if (params.length && (params.includes("system") || params.includes("derivation")) ) {
+        } else if (params.length && (params.includes("system") || params.includes("derivation") || params.includes("multiline")) ) {
             if (params.includes("system")) { thisEnvironment = "system"}
             else if (params.includes("derivation")) { thisEnvironment = "derivation" }
+            else if (params.includes("multiline")) { thisEnvironment = "multiline" }
             if (conversiontarget == "MathML") {
     //            latexLine = "<mtr>" + latexLine
             } else if (conversiontarget == "Speech") {
@@ -148,7 +189,7 @@ console.debug("temp");
                       } else if (conversiontarget == "Speech") {
    // why is this here and not in dictionary?
                         if (thisEnvironment == "cases") {latexLine += " end_case\n"}
-                        if (thisEnvironment == "system" || thisEnvironment == "derivation") {latexLine += " end_line\n"}
+                        if (thisEnvironment == "system" || thisEnvironment == "derivation" || thisEnvironment == "multiline") {latexLine += " end_line\n"}
                       } else {
                         latexLine += "\\\\\n";
                 }
@@ -157,6 +198,7 @@ console.debug("temp");
 
                 // treating cases where response show some requirements are not fulfilled
 // turned off while debugging system
+//  oooooo go back and consider multiline
                 if (false && dictionary[paramStack[0]].params && dictionary[paramStack[0]].params.includes("&beforeFirstRelation") && !response["&beforeFirstRelation"] && lastLine.trim().length == 0){
                     latexLine = "& \\;" + latexLine;
                 }

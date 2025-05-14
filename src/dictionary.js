@@ -194,6 +194,26 @@ export var dictionary = {
       "2,3": "#1 equals #3"
     }
   },
+ "🎯": {
+    "comment": [
+    ],
+    "alternative": [
+    ],
+    "type": "relation",
+    "priority": 0,
+//    "offpair": {
+//      "2,3": [ 1, 3 ]
+//    },
+    "rule": {
+      "2,3": "#1  #3"
+    },
+    "ruleML": {
+      "2,3": "#1 #3"
+    },
+    "speech": {
+      "2,3": "#1 #3"
+    }
+  },
   ">=": {
     "comment": [
       "´óÓÚµÈÓÚ"
@@ -2229,11 +2249,26 @@ export var dictionary = {
     "speechnote": "system",
     "MathMLnote": "system"
   },
+  "multiline:": {
+    "alternative": [],
+    "type": "multiline",
+    "params": [
+ //     "system",
+      "multiline",
+      "&beforeFirstRelation"
+    ],
+//    "seperateOut": true,  // don;t know what this did (but it put closing math delimiters in the wrong place)
+    "absorbEmptyLine": true,
+    "emptyLineBeforeIndent": true,
+    "note": "align",
+    "speechnote": "system",
+    "MathMLnote": "system"
+  },
   "derivation:": {
     "alternative": [],
     "type": "multiline",
     "params": [
-      "system",
+      "system",     // should be "derivation", but that is broken at the moment
       "&beforeFirstRelation"
     ],
 //    "seperateOut": true,  // don;t know what this did (but it put closing math delimiters in the wrong place)
@@ -2244,6 +2279,24 @@ export var dictionary = {
     "MathMLnote": "derivation"
   },
   "systemline": {  // as in   y^2 <= x^3 + a x + b
+    "alternative": [ ],
+    "type": "function",
+    "priority": 55,
+    "offpair": {
+      "1,4": [ 1, 2, 3, 4 ]
+    },
+    "extraArgument": 2,
+    "rule": {
+      "1,4": "#2  #3 &  #4"
+    },
+    "speech": {
+      "1,4": "#2 #3 #4 "
+    },
+    "ruleML": {
+      "1,4": "<mtr><mtd style=\"text-align: right\">#2</mtd><mtd>#3</mtd><mtd style=\"text-align: left\">#4</mtd></mtr>\n"
+    }
+  },
+  "multilineline": {  // as in   y^2 <= x^3 + a x + b
     "alternative": [ ],
     "type": "function",
     "priority": 55,

@@ -41,16 +41,19 @@ if (sourceTextArea.addEventListener) {
   sourceTextArea.addEventListener('input', function() {
 /*
 */
+      let allthetext = sourceTextArea.value;
+      allthetext = allthetext.replace(/&/g, "🎯");
+
       if(echosourceTextArea) {
-          echosourceTextArea.value = convert(sourceTextArea.value, "LaTeX");
+          echosourceTextArea.value = convert(allthetext, "LaTeX");
       }
 
       if(speechTextArea) {
-          speechTextArea.innerHTML = '" ' + convert(sourceTextArea.value, "Speech") + ' "';
+          speechTextArea.innerHTML = '" ' + convert(allthetext, "Speech") + ' "';
       }
 
       if(mathmlTextArea ||  mathmlDisplayArea) {
-          theSpaceMathInML = convert(sourceTextArea.value, "MathML");
+          theSpaceMathInML = convert(allthetext, "MathML");
 
           if(mathmlTextArea) { mathmlTextArea.value = theSpaceMathInML }
           if(mathmlDisplayArea) { mathmlDisplayArea.innerHTML = theSpaceMathInML }

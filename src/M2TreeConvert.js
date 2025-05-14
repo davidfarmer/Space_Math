@@ -248,7 +248,8 @@ console.debug("and now it is"+ key + "key of", keyType, "keyType");
                 case "relation": //relations
                     splitStr = [fullStr.substring(0,startKey), key, fullStr.substring(counter+1)];
                 // omitting, because we are trying a different way to parse system lines.
-                    if (false & keyType == "relation" && params.includes("&beforeFirstRelation") && !response["&beforeFirstRelation"]){
+                 //   if (false & keyType == "relation" && params.includes("&beforeFirstRelation") && !response["&beforeFirstRelation"]){
+                    if (keyType == "relation" && params.includes("&beforeFirstRelation") && !response["&beforeFirstRelation"]){
                         response["&beforeFirstRelation"] = true;
                         splitStr[2] = "&" + splitStr[2];
                     }
