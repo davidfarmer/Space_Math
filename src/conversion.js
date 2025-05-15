@@ -210,7 +210,7 @@ console.debug("aDDing qUAntity",str);
 export function simplifyAnswer(str) {
     let ans = str;
 
-console.debug("   starting to simplify Answer", ans);
+console.log("   starting to simplify Answer", ans);
     for (let i=0; i <= 2; ++i) {
         ans = ans.replace(/to the quantity([A-Z]?) +negative 1 +([A-Z]?)endquantity/g, "inverse");
         ans = ans.replace(/to the quantity([A-Z]?) +2 +([A-Z]?)endquantity/g, "squared");
@@ -765,6 +765,7 @@ export function postprocess(answer, conversiontarget) {
 // a single child.  When there is, transfer the attributes to the single child
 // refactor to imporve and reconcile this with "simplifyAnswer" in conversion.js
       str = str.replace(/<wrap([^>]+)>(<m[a-z]+[^<>]*)(>[^<>]*<\/m[a-z]+>)<\/wrap>/g, "$2$1$3");
+// if (str.match(/.*wrap.*/)) { console.log("wrap on ", str)};
       str = str.replace(/<wrap /g, "<mrow ");
       str = str.replace(/<\/wrap>/g, "</mrow>");
 /*

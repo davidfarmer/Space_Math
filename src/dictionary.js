@@ -2245,36 +2245,37 @@ export var dictionary = {
 //    "seperateOut": true,  // don;t know what this did (but it put closing math delimiters in the wrong place)
     "absorbEmptyLine": true,
     "emptyLineBeforeIndent": true,
-    "note": "align",
+    "note": "mdn",
     "speechnote": "system",
     "MathMLnote": "system"
   },
-  "multiline:": {
+  "align:": {
     "alternative": [],
     "type": "multiline",
     "params": [
  //     "system",
-      "multiline",
-      "&beforeFirstRelation"
+      "align",
+      "&atMarker"  // needs to not be &beforeFirstRelation
     ],
 //    "seperateOut": true,  // don;t know what this did (but it put closing math delimiters in the wrong place)
     "absorbEmptyLine": true,
     "emptyLineBeforeIndent": true,
-    "note": "align",
-    "speechnote": "system",
-    "MathMLnote": "system"
+//    "note": "align",
+    "note": "mdn",
+    "speechnote": "align",
+    "MathMLnote": "align"
   },
   "derivation:": {
     "alternative": [],
     "type": "multiline",
     "params": [
-      "system",     // should be "derivation", but that is broken at the moment
+      "derivation",     // should be "derivation", but that is broken at the moment
       "&beforeFirstRelation"
     ],
 //    "seperateOut": true,  // don;t know what this did (but it put closing math delimiters in the wrong place)
     "absorbEmptyLine": true,
     "emptyLineBeforeIndent": true,
-    "note": "align",
+    "note": "mdn",
     "speechnote": "derivation",
     "MathMLnote": "derivation"
   },
@@ -2287,7 +2288,8 @@ export var dictionary = {
     },
     "extraArgument": 2,
     "rule": {
-      "1,4": "#2  #3 &  #4"
+   //   "1,4": "#2  #3 \\ampXX  #4"
+      "1,4": "<mrow>#2  #3   #4</mrow>\n"  // should have \\amp, but that is supplied elsewhere
     },
     "speech": {
       "1,4": "#2 #3 #4 "
@@ -2296,7 +2298,7 @@ export var dictionary = {
       "1,4": "<mtr><mtd style=\"text-align: right\">#2</mtd><mtd>#3</mtd><mtd style=\"text-align: left\">#4</mtd></mtr>\n"
     }
   },
-  "multilineline": {  // as in   y^2 <= x^3 + a x + b
+  "alignline": {  // as in   y^2 <= x^3 + a x + b
     "alternative": [ ],
     "type": "function",
     "priority": 55,
@@ -2305,7 +2307,7 @@ export var dictionary = {
     },
     "extraArgument": 2,
     "rule": {
-      "1,4": "#2  #3 &  #4"
+      "1,4": "<mrow>#2  #3  #4</mrow>\n"  // should have \\amp, but that is supplied elsewhere
     },
     "speech": {
       "1,4": "#2 #3 #4 "
@@ -2323,7 +2325,8 @@ export var dictionary = {
     },
     "extraArgument": 1,
     "rule": {
-      "1,3": " #2 &  #3"
+  //    "1,3": " #2 \\amp  #3"
+      "1,3": "<mrow> #2  #3</mrow>\n"  // should have \\amp, but that is supplied elsewhere
     },
     "speech": {
       "1,3": "#2 #3 "

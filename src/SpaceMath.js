@@ -42,7 +42,7 @@ if (sourceTextArea.addEventListener) {
 /*
 */
       let allthetext = sourceTextArea.value;
-      allthetext = allthetext.replace(/&/g, "🎯");
+      allthetext = allthetext.replace(/(&|\\amp)/g, "🎯");
 
       if(echosourceTextArea) {
           echosourceTextArea.value = convert(allthetext, "LaTeX");

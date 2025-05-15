@@ -132,7 +132,7 @@ function convertPieces(pieces, conversiontarget) {
 
 // like convert2, except no delimiters because we have alread separated the math
 export function convertMathSnippet(str, conversiontarget) {
-    str = str.replace(/&/g, "🎯");   // for alignment.  Can't use & because of xml later
+    str = str.replace(/(&|\\amp)/g, "🎯");   // for alignment.  Can't use & because of xml later
 console.debug("starting convertMathSnippet", conversiontarget, "on", str);
     let convertedStr = M2LConvert(str,"LBRACK","RBRACK", conversiontarget);
     convertedStr = simplifyAnswer(convertedStr);

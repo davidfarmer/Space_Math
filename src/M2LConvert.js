@@ -18,7 +18,7 @@ import { condenseSpaces } from './conversion.js'
 
 export function M2LConvert(str,lp,rp, conversiontarget){
     //preprocessing for inline structure
-str = str.replace(/\&/, "🎯");
+str = str.replace(/(&|\\amp)/g, "🎯");
 console.log("M2LConvert(str,lp,rp, conversiontarget)", str,lp,rp, conversiontarget);
     for (let key of translateTable.getAllMultiLine()) { // iterate through dictionary
         let index = str.indexOf(key.slice(0, -1)+"(");
@@ -67,10 +67,10 @@ console.log("M2LConvert(str,lp,rp, conversiontarget)", str,lp,rp, conversiontarg
 console.debug("  ++  ++  ++  ++  ++  ++  ++  ++  ++  ++ ");
 console.debug("top of loop  ",splitStr);
 console.debug("params = ",params);
-console.log("params = ",params);
 //console.debug("thisEnvironment = ",thisEnvironment);
 
-      if (splitStr[0].trim() == "" && !params.includes("system") && !params.includes("derivation") && !params.includes("multiline")) {console.info("skipping empty string");  splitStr.shift();  continue }  // may need this as an indicator in some cases ??
+console.log("next step: ", params, "gg", splitStr);
+      if (splitStr[0].trim() == "" && !params.includes("system") && !params.includes("derivation") && !params.includes("align")) {console.info("skipping empty string");  splitStr.shift();  continue }  // may need this as an indicator in some cases ??
    // sort of a hack, but working toward better multiline expressions
       if (params.length > 0 && params.includes("caseEnvironment")) {
         let thisLine = splitStr[0];
@@ -97,7 +97,7 @@ console.debug("thisLinePieces", thisLinePieces);
             while (thisLinePieces.length >= 3) { newthirdpiece = thisLinePieces.pop() + newthirdpiece }
             thisLinePieces[2] = newthirdpiece;
         }
-        if (thisLinePieces.length != 3) { console.error("invalid system/derivation/multiline line", thisLine, "with pieces", thisLinePieces) }
+        if (thisLinePieces.length != 3) { console.error("invalid system/derivation/align line", thisLine, "with pieces", thisLinePieces) }
         else {
 
 // in the derivation case, we have to treat the first line differently
@@ -106,13 +106,13 @@ console.debug("thisLinePieces", thisLinePieces);
                 thisLine = "derivationline(" + thisLinePieces[1].trim() + ")(" + thisLinePieces[2].trim() + ")";
             } else {
                 thisLine = "systemline(" + thisLinePieces[0].trim() + ")(" + thisLinePieces[1].trim() + ")(" + thisLinePieces[2].trim() + ")";
-//   multilineline 
+//   alignline 
             }
             splitStr[0] = thisLine;
         }
-console.debug("thisLine", thisLine, "thisLinePieces", thisLinePieces);
+console.log("thisLine system, derivation", thisLine, "thisLinePieces", thisLinePieces, "params", params);
       }
-        else if (params.length > 0 && (params.includes("multiline") || params.includes("multiline") ) ) {
+        else if ( (params.length > 0) && params.includes("align") ) { 
         let thisLine = splitStr[0];
         // a if the next line is not blank, it is a ontinuation of the current line
         while (splitStr.length > 1 && splitStr[1].trim() != "") {
@@ -129,19 +129,19 @@ console.log("thisLine", thisLine, "thisLinePieces", thisLinePieces);
             while (thisLinePieces.length >= 3) { newthirdpiece = thisLinePieces.pop() + newthirdpiece }
             thisLinePieces[2] = newthirdpiece;
         }
-        if (thisLinePieces.length != 3) { console.error("invalid system/derivation/multiline line", thisLine, "with pieces", thisLinePieces) }
+        if (thisLinePieces.length != 3) { console.error("invalid system/derivation/align line", thisLine, "with pieces", thisLinePieces) }
         else {
 
 // in the derivation case, we have to treat the first line differently
 // the implementation below assumes too much
   //          if (thisLinePieces[0].trim() == "") {
-  //              thisLine = "multilineline(" + thisLinePieces[1].trim() + ")(" + thisLinePieces[2].trim() + ")";
+  //              thisLine = "alignline(" + thisLinePieces[1].trim() + ")(" + thisLinePieces[2].trim() + ")";
   //          } else {
-                thisLine = "multilineline(" + thisLinePieces[0].trim() + ")(" + thisLinePieces[1].trim() + ")(" + thisLinePieces[2].trim() + ")";
+                thisLine = "alignline(" + thisLinePieces[0].trim() + ")(" + thisLinePieces[1].trim() + ")(" + thisLinePieces[2].trim() + ")";
   //          }
             splitStr[0] = thisLine;
         }
-console.debug("thisLine", thisLine, "thisLinePieces", thisLinePieces);
+console.log("thisLine align", thisLine, "thisLinePieces", thisLinePieces, "params", params);
       } 
 
 
@@ -152,12 +152,15 @@ console.debug("thisLine", thisLine, "thisLinePieces", thisLinePieces);
 
    // this is the key parsing step, when one meaningful string is parsed into a tree
 // 4/1/23 added .trim(); may need to rethink, if the indentation level is relevant
+console.log("about to M2TreeConvert", splitStr[0].trim(), "ooo", params);
         let temp = M2TreeConvert(splitStr[0].trim(),params, conversiontarget);
 console.debug("temp");
         let tree = temp[0];
         let exParam = temp[1];
         let response = temp[2];
+console.log("about to combineTree2Latex", tree, "ooo", params);
         let latexLine = combineTree2Latex(tree,params);
+console.log("latexLine", latexLine);
         let thisEnvironment = "";
         if (params.length && params.includes("caseEnvironment")) {
             thisEnvironment = "cases";
@@ -166,17 +169,17 @@ console.debug("temp");
             } else if (conversiontarget == "Speech") {
                 latexLine = " case " + latexLine
             }
-        } else if (params.length && (params.includes("system") || params.includes("derivation") || params.includes("multiline")) ) {
+        } else if (params.length && (params.includes("system") || params.includes("derivation") || params.includes("align")) ) {
             if (params.includes("system")) { thisEnvironment = "system"}
             else if (params.includes("derivation")) { thisEnvironment = "derivation" }
-            else if (params.includes("multiline")) { thisEnvironment = "multiline" }
+            else if (params.includes("align")) { thisEnvironment = "align" }
             if (conversiontarget == "MathML") {
     //            latexLine = "<mtr>" + latexLine
             } else if (conversiontarget == "Speech") {
                 latexLine = " line " + latexLine
             }
         }
-        if (splitStr.length > 0 && exParam.length == 0){
+        if (splitStr.length > 0 && exParam.length == 0) {
             if (paramStack.length > 0 && ((!dictionary[paramStack[0]].absorbEmptyLine) || splitStr[0].trim().length > 0)){
                 if ((dictionary[paramStack[0]].absorbEmptyLine && splitStr.length > 1 && splitStr[1].trim().length > 0) || (splitStr.length == 2 && splitStr[1].trim().length == 0) || splitStr.length == 1){
                     // do nothing
@@ -189,18 +192,19 @@ console.debug("temp");
                       } else if (conversiontarget == "Speech") {
    // why is this here and not in dictionary?
                         if (thisEnvironment == "cases") {latexLine += " end_case\n"}
-                        if (thisEnvironment == "system" || thisEnvironment == "derivation" || thisEnvironment == "multiline") {latexLine += " end_line\n"}
+                        if (thisEnvironment == "system" || thisEnvironment == "derivation" || thisEnvironment == "align") {latexLine += " end_line\n"}
                       } else {
-                        latexLine += "\\\\\n";
+                  //      latexLine += "\\\\\n";
+                        latexLine += "";
                 }
                     }
                 }
 
                 // treating cases where response show some requirements are not fulfilled
 // turned off while debugging system
-//  oooooo go back and consider multiline
+//  oooooo go back and consider align
                 if (false && dictionary[paramStack[0]].params && dictionary[paramStack[0]].params.includes("&beforeFirstRelation") && !response["&beforeFirstRelation"] && lastLine.trim().length == 0){
-                    latexLine = "& \\;" + latexLine;
+                    latexLine = "QQQQ& \\;" + latexLine;
                 }
             } else {
                 if (splitStr.length > 1){
@@ -214,7 +218,7 @@ console.debug("temp");
         }
         lastLine = splitStr[0];
         splitStr.shift();
-console.debug("============ exParam", exParam);
+console.log("============ exParam", exParam, "jjj", lastLine, "mmm", splitStr);
         if (dictionary[exParam]){
             if (dictionary[exParam].seperateOut){  // don;t know why?
                 latexLine += rp;
@@ -230,7 +234,8 @@ console.debug("============ exParam", exParam);
                 } else if (conversiontarget == "Speech") {
                     latexLine += " begin-" + dictionary[exParam].speechnote + " ";
                 } else {
-                    latexLine += "\\begin{"+dictionary[exParam].note+"}";
+                //    latexLine += "\\begin{"+dictionary[exParam].note+"}";
+                    latexLine += "\n<"+dictionary[exParam].note+">\n";
                 }
             }
 
@@ -257,14 +262,17 @@ console.debug("============ exParam", exParam);
         latexStr += latexLine;
 
     }
+console.log("next paramStack", paramStack);
+console.log("was latexStr", latexStr);
     while (paramStack.length > 0){
+console.log("next latexStr", latexStr);
         if (dictionary[paramStack[0]].noBeginEnd){
             latexStr += "}";
         } else {
                 if (conversiontarget == "MathML") {
                     latexStr += "</mtable><!-- " + dictionary[paramStack[0]].MathMLnote + " -->\n";
                     if (params.length && params.includes("caseEnvironment")) {
-                        latexStr += "</mrow>";  // because of the mrow supplying the big left curly bracket
+                        latexStr += "</mrow>\n";  // because of the mrow supplying the big left curly bracket
                     }
                 } else if (conversiontarget == "Speech") {
          // it seems anomalous that we need to stick in end_case here
@@ -272,7 +280,8 @@ console.debug("============ exParam", exParam);
                     if (dictionary[paramStack[0]].note == "align") { latexStr += "end_line " }
                     latexStr += "end-" + dictionary[paramStack[0]].speechnote;
                 } else {
-                    latexStr += "\\end{"+dictionary[paramStack[0]].note+"}";
+         //           latexStr += "\\end{"+dictionary[paramStack[0]].note+"}";
+                    latexStr += "</"+dictionary[paramStack[0]].note+">\n";
                 }
         }
         if (dictionary[paramStack[0]].seperateOut){  // don;t know why?
@@ -280,6 +289,6 @@ console.debug("============ exParam", exParam);
         }
         paramStack.shift();
     } //no indent
-    console.debug("latexStr", latexStr);
+    console.log("latexStr", latexStr);
     return condenseSpaces(latexStr)
 }
