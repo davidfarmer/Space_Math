@@ -3108,7 +3108,7 @@ function K(i, e) {
     return r;
   }
 }
-function S(i, e, t) {
+function j(i, e, t) {
   console.debug("starting M2TreeConvert  conversiontarget", t);
   let r = new Ae(0, i, null, t), n = "", o = r.root, p = !0, a, l = [], k = {};
   for (console.debug("continuing M2TreeConvert  conversiontarget", t, "on", i); p; ) {
@@ -3139,7 +3139,7 @@ function S(i, e, t) {
         if (f != -1) {
           let v = [u.substring(0, m), u.substring(m + 1, f), u.substring(f + 1)];
           o.value = "";
-          let w = S(v[1].trim(), e, t)[0].root;
+          let w = j(v[1].trim(), e, t)[0].root;
           if (w.pair.push([d, u[f]]), w = C(v[0], w, t), console.debug("just made pNode", w), a = Z(a, w, t), console.debug("just made stackedTreeNode", a), l.length > 0) {
             a.key = l[0][0].children[0].key;
             let M = l[0][0].children.pop();
@@ -3154,7 +3154,7 @@ function S(i, e, t) {
         if (f != -1) {
           let v = [u.substring(0, m), u.substring(m + 1, f), u.substring(f + 1)];
           o.value = "";
-          let w = S(v[1].trim(), e, t)[0].root;
+          let w = j(v[1].trim(), e, t)[0].root;
           if (w.pair.push(["\\langle ", "\\rangle "]), w = C(v[0], w, t), a = Z(a, w, t), l.length > 0) {
             a.key = l[0][0].children[0].key;
             let M = l[0][0].children.pop();
@@ -3185,7 +3185,7 @@ function S(i, e, t) {
       g || (m++, d.match(/[\s\d]/g) && (y = m));
     }
     if (console.debug("is there a" + c + "key?"), c) {
-      console.debug("yes, there is there a" + c + "key"), !s[c] && c != " " && c != "" && (c = I.getItem(c)), console.debug("and now it is" + c + "key of", h, "keyType");
+      console.debug("yes, there is there a" + c + "key"), !s[c] && c != " " && c != "" && (c = S.getItem(c)), console.debug("and now it is" + c + "key of", h, "keyType");
       let d, g, q, f;
       switch (h) {
         case "space":
@@ -3198,10 +3198,10 @@ function S(i, e, t) {
           }
           let v = !0;
           (U(c) || D(c)) && (h != "space" && d[0].length == 0 || u[b - 1]) && u[m + 1] && u[b - 1] != " " && u[m + 1] != " " && (v = !1);
-          let w = j(c), M = !1;
+          let w = I(c), M = !1;
           h != "space" && s[c].script && (w -= 0.1, v && (M = !0, g.exPriority = !0, q.exPriority = !0, f.exPriority = !0), v || (v = !0), Be(o, c) && (v = !1));
           let T = 0;
-          if (o.exPriority && !M && (T += 0.2), v && (o.noPriority || w + T < j(o.key))) {
+          if (o.exPriority && !M && (T += 0.2), v && (o.noPriority || w + T < I(o.key))) {
             let P = !1;
             for (o.value = g.value, o.children = g.children, o.pair = g.pair, o.exPriority = g.exPriority, o.noPriority = g.noPriority; o.parent; ) {
               let A = o.position;
@@ -3212,7 +3212,7 @@ function S(i, e, t) {
                     break;
                   }
               }
-              if (!o.children[0].noPriority && w + T >= j(o.children[0].key)) {
+              if (!o.children[0].noPriority && w + T >= I(o.children[0].key)) {
                 let _ = o.children[A], N = new $(A, null, o.children[0].key, null, t);
                 N.noPriority = o.children[A].noPriority, N.exPriority = o.children[A].exPriority, o.children[A] = N, N.parent = o, N.insertNode(_), _.key = c, _.noPriority = q.noPriority, _.exPriority = q.exPriority, N.insertNode(q), N.insertNode(f), o = N.children[2], P = !0;
                 break;
@@ -3232,7 +3232,7 @@ function S(i, e, t) {
           if (L.conversiontarget = t, L.value = "", L.insert(c, c), f.key = c, s[c].pairedArgument) {
             let P = V(u, b, c, s[c].pairedArgument, s[c].family);
             if (P != -1) {
-              let A = [u.substring(m + 1, P), u.substring(P + 1)], _ = S(A[0].trim(), e, t)[0].root, N = new $(0, A[1], c, null, t);
+              let A = [u.substring(m + 1, P), u.substring(P + 1)], _ = j(A[0].trim(), e, t)[0].root, N = new $(0, A[1], c, null, t);
               L.insertNode(_), L.insertNode(N);
             } else
               L.insertNode(f);
@@ -3314,7 +3314,7 @@ function _e(i, e, t, r) {
     return n.mustHaveLeftArgument && t == 0 && !r ? void 0 : n.type;
 }
 function B(i) {
-  return s[i] ? s[i] : (i = I.getItem(i), i == -1 ? void 0 : s[i]);
+  return s[i] ? s[i] : (i = S.getItem(i), i == -1 ? void 0 : s[i]);
 }
 function Te(i) {
   return ["(", "[", "{", "⁅", "❲"].includes(i);
@@ -3335,7 +3335,7 @@ function U(i) {
   let e = B(i);
   return e && e.type == "relation";
 }
-function j(i) {
+function I(i) {
   let e = B(i);
   switch (i) {
     case " ":
@@ -3421,12 +3421,12 @@ function Be(i, e) {
       return !0;
   return !1;
 }
-function Se(i, e) {
+function je(i, e) {
   return console.debug("combineTree2Latex", i, "params", e, "with output", i.root.outputvalue), i.root.combine(e), console.debug("AGAIN combineTree2Latex", i, "params", e, "with output", i.root.outputvalue), i.root.outputvalue;
 }
-function je(i, e, t, r) {
+function Ie(i, e, t, r) {
   i = i.replace(/(&|\\amp)/g, "🎯");
-  for (let k of I.getAllMultiLine()) {
+  for (let k of S.getAllMultiLine()) {
     let u = i.indexOf(k.slice(0, -1) + "(");
     for (; u != -1; ) {
       let b = Ve(i, u + k.length - 1, "(", ")");
@@ -3478,9 +3478,9 @@ function je(i, e, t, r) {
         h[2] = d;
       } else h.length == 3 ? (c = "alignline(" + h[0].trim() + ")(" + h[1].trim() + ")(" + h[2].trim() + ")", n[0] = c) : n[0] = "";
     }
-    let k = S(n[0].trim(), l, r);
+    let k = j(n[0].trim(), l, r);
     console.debug("temp");
-    let u = k[0], b = k[1], y = Se(u, l), m = "";
+    let u = k[0], b = k[1], y = je(u, l), m = "";
     l.length && l.includes("caseEnvironment") ? (m = "cases", r == "MathML" || r == "Speech" && (y = " case " + y)) : l.length && (l.includes("system") || l.includes("derivation") || l.includes("align")) && (l.includes("system") ? m = "system" : l.includes("derivation") ? m = "derivation" : l.includes("align") && (m = "align"), r == "MathML" || r == "Speech" && (y = " line " + y)), n.length > 0 && b.length == 0 && (p.length > 0 && (!s[p[0]].absorbEmptyLine || n[0].trim().length > 0) ? s[p[0]].absorbEmptyLine && n.length > 1 && n[1].trim().length > 0 || n.length == 2 && n[1].trim().length == 0 || n.length == 1 || (s[p[0]].changeLineTurn ? y += s[p[0]].changeLineTurn + `
 ` : r == "MathML" || (r == "Speech" ? (m == "cases" && (y += ` end_case
 `), (m == "system" || m == "derivation" || m == "align") && (y += ` end_line
@@ -3498,7 +3498,7 @@ function je(i, e, t, r) {
 `, s[p[0]].seperateOut && (o += e), p.shift();
   return ie(o);
 }
-class Ie {
+class Se {
   constructor() {
     this.cache = [], this.cacheSize = 500, this.nonCache = [], this.nonCacheSize = 500, this.multilineList = [];
   }
@@ -3533,7 +3533,7 @@ class Ie {
     return this.cacheSize;
   }
 }
-let I = new Ie();
+let S = new Se();
 function Qe(i, e) {
   console.debug("converting to target", e);
   let t = ve(i), r = Le(t);
@@ -3559,8 +3559,9 @@ function Xe(i, e) {
   return t;
 }
 function Fe(i, e) {
-  i = i.replace(/(&|\\amp)/g, "🎯"), console.debug("starting convertMathSnippet", e, "on", i);
-  let t = je(i, "LBRACK", "RBRACK", e);
+  i = i.replace(/(&|\\amp)/g, "🎯"), i = i.replace(/REtuRn/g, `
+`);
+  let t = Ie(i, "LBRACK", "RBRACK", e);
   return t = ae(t), t;
 }
 function Ve(i, e, t, r) {
