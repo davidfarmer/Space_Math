@@ -41,7 +41,7 @@ var s = {
       "2,3": "#1 minus #3"
     }
   },
-  "∘": {
+  of: {
     comment: [],
     alternative: [
       "of",
