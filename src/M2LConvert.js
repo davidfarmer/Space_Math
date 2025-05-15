@@ -19,7 +19,7 @@ import { condenseSpaces } from './conversion.js'
 export function M2LConvert(str,lp,rp, conversiontarget){
     //preprocessing for inline structure
 str = str.replace(/(&|\\amp)/g, "🎯");
-console.log("M2LConvert(str,lp,rp, conversiontarget)", str,lp,rp, conversiontarget);
+// console.log("M2LConvert(str,lp,rp, conversiontarget)", str,lp,rp, conversiontarget);
     for (let key of translateTable.getAllMultiLine()) { // iterate through dictionary
         let index = str.indexOf(key.slice(0, -1)+"(");
         while (index != -1){
@@ -69,7 +69,7 @@ console.debug("top of loop  ",splitStr);
 console.debug("params = ",params);
 //console.debug("thisEnvironment = ",thisEnvironment);
 
-console.log("next step: ", params, "gg", splitStr);
+// console.log("next step: ", params, "gg", splitStr);
       if (splitStr[0].trim() == "" && !params.includes("system") && !params.includes("derivation") && !params.includes("align")) {console.info("skipping empty string");  splitStr.shift();  continue }  // may need this as an indicator in some cases ??
    // sort of a hack, but working toward better multiline expressions
       if (params.length > 0 && params.includes("caseEnvironment")) {
@@ -97,7 +97,7 @@ console.debug("thisLinePieces", thisLinePieces);
             while (thisLinePieces.length >= 3) { newthirdpiece = thisLinePieces.pop() + newthirdpiece }
             thisLinePieces[2] = newthirdpiece;
         }
-        if (thisLinePieces.length != 3) { console.error("invalid system/derivation/align line", thisLine, "with pieces", thisLinePieces) }
+        if (thisLinePieces.length != 3) { console.warn("invalid system/derivation/align line", thisLine, "with pieces", thisLinePieces) }
         else {
 
 // in the derivation case, we have to treat the first line differently
@@ -110,7 +110,7 @@ console.debug("thisLinePieces", thisLinePieces);
             }
             splitStr[0] = thisLine;
         }
-console.log("thisLine system, derivation", thisLine, "thisLinePieces", thisLinePieces, "params", params);
+// console.log("thisLine system, derivation", thisLine, "thisLinePieces", thisLinePieces, "params", params);
       }
         else if ( (params.length > 0) && params.includes("align") ) { 
         let thisLine = splitStr[0];
@@ -121,7 +121,7 @@ console.log("thisLine system, derivation", thisLine, "thisLinePieces", thisLineP
         }
   // move the relations to dictionary
         let thisLinePieces = thisLine.split(/(🎯).*?/);
-console.log("thisLine", thisLine, "thisLinePieces", thisLinePieces);
+// console.log("thisLine", thisLine, "thisLinePieces", thisLinePieces);
         if (thisLinePieces[1] == "🎯") { thisLinePieces[1] = "" }
         // maybe more than one relation on the line
         if (thisLinePieces.length > 3) {
@@ -129,19 +129,20 @@ console.log("thisLine", thisLine, "thisLinePieces", thisLinePieces);
             while (thisLinePieces.length >= 3) { newthirdpiece = thisLinePieces.pop() + newthirdpiece }
             thisLinePieces[2] = newthirdpiece;
         }
-        if (thisLinePieces.length != 3) { console.error("invalid system/derivation/align line", thisLine, "with pieces", thisLinePieces) }
-        else {
+//         if (thisLinePieces.length != 3) { console.error("invalid system/derivation/align line", thisLine, "with pieces", thisLinePieces) }
+        else if (thisLinePieces.length == 3) {
 
 // in the derivation case, we have to treat the first line differently
 // the implementation below assumes too much
   //          if (thisLinePieces[0].trim() == "") {
   //              thisLine = "alignline(" + thisLinePieces[1].trim() + ")(" + thisLinePieces[2].trim() + ")";
   //          } else {
+// console.log("thisLinePieces", thisLinePieces);
                 thisLine = "alignline(" + thisLinePieces[0].trim() + ")(" + thisLinePieces[1].trim() + ")(" + thisLinePieces[2].trim() + ")";
   //          }
             splitStr[0] = thisLine;
-        }
-console.log("thisLine align", thisLine, "thisLinePieces", thisLinePieces, "params", params);
+        } else { splitStr[0] = "" }
+// console.log("thisLine align", thisLine, "thisLinePieces", thisLinePieces, "params", params);
       } 
 
 
@@ -152,15 +153,15 @@ console.log("thisLine align", thisLine, "thisLinePieces", thisLinePieces, "param
 
    // this is the key parsing step, when one meaningful string is parsed into a tree
 // 4/1/23 added .trim(); may need to rethink, if the indentation level is relevant
-console.log("about to M2TreeConvert", splitStr[0].trim(), "ooo", params);
+// console.log("about to M2TreeConvert", splitStr[0].trim(), "ooo", params);
         let temp = M2TreeConvert(splitStr[0].trim(),params, conversiontarget);
 console.debug("temp");
         let tree = temp[0];
         let exParam = temp[1];
         let response = temp[2];
-console.log("about to combineTree2Latex", tree, "ooo", params);
+// console.log("about to combineTree2Latex", tree, "ooo", params);
         let latexLine = combineTree2Latex(tree,params);
-console.log("latexLine", latexLine);
+// console.log("latexLine", latexLine);
         let thisEnvironment = "";
         if (params.length && params.includes("caseEnvironment")) {
             thisEnvironment = "cases";
@@ -218,7 +219,7 @@ console.log("latexLine", latexLine);
         }
         lastLine = splitStr[0];
         splitStr.shift();
-console.log("============ exParam", exParam, "jjj", lastLine, "mmm", splitStr);
+// console.log("============ exParam", exParam, "jjj", lastLine, "mmm", splitStr);
         if (dictionary[exParam]){
             if (dictionary[exParam].seperateOut){  // don;t know why?
                 latexLine += rp;
@@ -262,10 +263,10 @@ console.log("============ exParam", exParam, "jjj", lastLine, "mmm", splitStr);
         latexStr += latexLine;
 
     }
-console.log("next paramStack", paramStack);
-console.log("was latexStr", latexStr);
+// console.log("next paramStack", paramStack);
+// console.log("was latexStr", latexStr);
     while (paramStack.length > 0){
-console.log("next latexStr", latexStr);
+// console.log("next latexStr", latexStr);
         if (dictionary[paramStack[0]].noBeginEnd){
             latexStr += "}";
         } else {
@@ -289,6 +290,6 @@ console.log("next latexStr", latexStr);
         }
         paramStack.shift();
     } //no indent
-    console.log("latexStr", latexStr);
+//     console.log("latexStr", latexStr);
     return condenseSpaces(latexStr)
 }

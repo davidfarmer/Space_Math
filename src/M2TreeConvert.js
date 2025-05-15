@@ -252,7 +252,7 @@ console.debug("and now it is"+ key + "key of", keyType, "keyType");
                     if (keyType == "relation" && params.includes("&beforeFirstRelation") && !response["&beforeFirstRelation"]){
                         response["&beforeFirstRelation"] = true;
                         splitStr[2] = "&" + splitStr[2];
-console.log("splitStr", splitStr);
+// console.log("splitStr", splitStr);
                     }
                     leftNode = new TreeNode(0,splitStr[0],key,null, conversiontarget);
                     keyNode = new TreeNode(0,splitStr[1],key,null, conversiontarget);

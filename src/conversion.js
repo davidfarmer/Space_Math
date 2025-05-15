@@ -210,7 +210,7 @@ console.debug("aDDing qUAntity",str);
 export function simplifyAnswer(str) {
     let ans = str;
 
-console.log("   starting to simplify Answer", ans);
+// console.log("   starting to simplify Answer", ans);
     for (let i=0; i <= 2; ++i) {
         ans = ans.replace(/to the quantity([A-Z]?) +negative 1 +([A-Z]?)endquantity/g, "inverse");
         ans = ans.replace(/to the quantity([A-Z]?) +2 +([A-Z]?)endquantity/g, "squared");

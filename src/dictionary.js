@@ -2307,7 +2307,7 @@ export var dictionary = {
     },
     "extraArgument": 2,
     "rule": {
-      "1,4": "<mrow>#2  #3  #4</mrow>\n"  // should have \\amp, but that is supplied elsewhere
+      "1,4": "<mrow>#2  #3 \\amp  #4</mrow>\n"  // should have \\amp, but that is supplied elsewhere
     },
     "speech": {
       "1,4": "#2 #3 #4 "
