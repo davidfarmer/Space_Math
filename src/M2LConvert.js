@@ -235,8 +235,11 @@ console.debug("temp");
                 } else if (conversiontarget == "Speech") {
                     latexLine += " begin-" + dictionary[exParam].speechnote + " ";
                 } else {
-                //    latexLine += "\\begin{"+dictionary[exParam].note+"}";
+                  if (exParam == "cases:") {
+                    latexLine += "\\begin{"+dictionary[exParam].note+"}\n";
+                  } else {
                     latexLine += "\n<"+dictionary[exParam].note+">\n";
+                  }
                 }
             }
 
@@ -281,8 +284,11 @@ console.debug("temp");
                     if (dictionary[paramStack[0]].note == "align") { latexStr += "end_line " }
                     latexStr += "end-" + dictionary[paramStack[0]].speechnote;
                 } else {
-         //           latexStr += "\\end{"+dictionary[paramStack[0]].note+"}";
+                  if (params.length && params.includes("caseEnvironment")) {
+                    latexStr += "\\end{"+dictionary[paramStack[0]].note+"}\n";
+                  } else {
                     latexStr += "</"+dictionary[paramStack[0]].note+">\n";
+                  }
                 }
         }
         if (dictionary[paramStack[0]].seperateOut){  // don;t know why?

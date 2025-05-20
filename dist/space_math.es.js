@@ -2265,7 +2265,8 @@ var s = {
     },
     extraArgument: 2,
     rule: {
-      "1,4": "#2 & \\text{ #3 } #4"
+      "1,4": `#2 & \\text{ #3 } #4\\\\
+`
     },
     speech: {
       "1,4": "#2 #3 #4 "
@@ -2990,8 +2991,8 @@ class $ {
           a ? r = r.replace("#{}", "{}") : r = r.replace("#{}", "");
         }
         for (let a = 0; a < this.children.length; a++) {
-          let l = this.children[a].value, k = this.children[a].outputvalue, u = l, b = k;
-          r.includes("#@" + (a + 1)) && (u.length > 1 && (u = "{" + u + "}"), r = r.replace("#@" + (a + 1), u), n = n.replace("#@" + (a + 1), b)), e.includes("caseEnvironment") ? (r = r.replace("#&", "&"), n = n.replace("#&", "&")) : (r = r.replace("#&\\text{", "\\text{ "), r = r.replace("#&", ""), n = n.replace("#&\\text{", "\\text{ "), n = n.replace("#&", "")), r = r.replace("#" + (a + 1) + "@1", l[0]), r = r.replace("#" + (a + 1) + "@-1", l.substring(1)), r = r.replace("#" + (a + 1), l), n = n.replace("#" + (a + 1) + "@1", k[0]), n = n.replace("#" + (a + 1) + "@-1", k.substring(1)), n = n.replace("#" + (a + 1), k);
+          let l = this.children[a].value, k = this.children[a].outputvalue, u = l, g = k;
+          r.includes("#@" + (a + 1)) && (u.length > 1 && (u = "{" + u + "}"), r = r.replace("#@" + (a + 1), u), n = n.replace("#@" + (a + 1), g)), e.includes("caseEnvironment") ? (r = r.replace("#&", "&"), n = n.replace("#&", "&")) : (r = r.replace("#&\\text{", "\\text{ "), r = r.replace("#&", ""), n = n.replace("#&\\text{", "\\text{ "), n = n.replace("#&", "")), r = r.replace("#" + (a + 1) + "@1", l[0]), r = r.replace("#" + (a + 1) + "@-1", l.substring(1)), r = r.replace("#" + (a + 1), l), n = n.replace("#" + (a + 1) + "@1", k[0]), n = n.replace("#" + (a + 1) + "@-1", k.substring(1)), n = n.replace("#" + (a + 1), k);
         }
       }
       this.value = r, this.outputvalue = n, this.children = [];
@@ -3114,9 +3115,9 @@ function j(i, e, t) {
   for (console.debug("continuing M2TreeConvert  conversiontarget", t, "on", i); p; ) {
     let u = o.value;
     console.debug("fullStr", "X" + u + "X");
-    let b = 0, y = 0, m = 0, c, h;
+    let g = 0, y = 0, m = 0, c, h;
     for (; u.length > m; ) {
-      let d = u[m], g = !1, q = !1;
+      let d = u[m], b = !1, q = !1;
       for (let f of [['"', '"']])
         if (d == f[0]) {
           console.debug("found a quote");
@@ -3130,7 +3131,7 @@ function j(i, e, t) {
               let T = l[0][0].children.pop();
               l[0][0].insertNode(a), l[0][0].insertNode(T), l[0][1]--, l[0][1] == 0 && l.shift(), a = void 0;
             }
-            u = u.substring(v + 1), m = 0, y = 0, c = void 0, h = void 0, g = !0;
+            u = u.substring(v + 1), m = 0, y = 0, c = void 0, h = void 0, b = !0;
           }
         }
       if (Te(d)) {
@@ -3145,7 +3146,7 @@ function j(i, e, t) {
             let M = l[0][0].children.pop();
             l[0][0].insertNode(a), l[0][0].insertNode(M), l[0][1]--, l[0][1] == 0 && l.shift(), a = void 0;
           }
-          u = u.substring(f + 1), m = 0, y = 0, c = void 0, h = void 0, g = !0;
+          u = u.substring(f + 1), m = 0, y = 0, c = void 0, h = void 0, b = !0;
         }
       }
       if (d == "<" && u[m + 1] != " ") {
@@ -3160,7 +3161,7 @@ function j(i, e, t) {
             let M = l[0][0].children.pop();
             l[0][0].insertNode(a), l[0][0].insertNode(M), l[0][1]--, l[0][1] == 0 && l.shift(), a = void 0;
           }
-          u = u.substring(f + 1), m = 0, y = 0, c = void 0, h = void 0, g = !0, console.debug("keyType", h);
+          u = u.substring(f + 1), m = 0, y = 0, c = void 0, h = void 0, b = !0, console.debug("keyType", h);
         }
       }
       console.debug("OUT j", y, "on", "X" + u + "X", "woith counter", m);
@@ -3171,39 +3172,39 @@ function j(i, e, t) {
         }
         let v = u.substring(f, m + 1), w = _e(u, v, m, a);
         if (console.debug("subStr", v, "type", w), w) {
-          c = v, b = f, h = w, q = !0, console.debug("A keyType", h, "with key", "X" + c + "X", "from subStr", v);
+          c = v, g = f, h = w, q = !0, console.debug("A keyType", h, "with key", "X" + c + "X", "from subStr", v);
           break;
         }
         if (v == " " && (m >= 1 || o.parent && o.parent.children.length == 2 && o.position == 1 || a) && !Oe(Ce(u, m))) {
-          c = v, b = f, h = "space", q = !0, console.debug("B keyType", h);
+          c = v, g = f, h = "space", q = !0, console.debug("B keyType", h);
           break;
         } else
           console.debug("     maybe breaking on multiword subStr", v);
       }
       if (q)
         break;
-      g || (m++, d.match(/[\s\d]/g) && (y = m));
+      b || (m++, d.match(/[\s\d]/g) && (y = m));
     }
     if (console.debug("is there a" + c + "key?"), c) {
       console.debug("yes, there is there a" + c + "key"), !s[c] && c != " " && c != "" && (c = S.getItem(c)), console.debug("and now it is" + c + "key of", h, "keyType");
-      let d, g, q, f;
+      let d, b, q, f;
       switch (h) {
         case "space":
         case "operator":
         //operators
         case "relation":
-          if (d = [u.substring(0, b), c, u.substring(m + 1)], h == "relation" && e.includes("&beforeFirstRelation") && !k["&beforeFirstRelation"] && (k["&beforeFirstRelation"] = !0, d[2] = "&" + d[2]), g = new $(0, d[0], c, null, t), q = new $(0, d[1], c, null, t), f = new $(0, d[2], c, null, t), a && (a = Pe(g.value, a, t), g = a, g.key = c, a = void 0), h == "space" && l.length > 0) {
+          if (d = [u.substring(0, g), c, u.substring(m + 1)], h == "relation" && e.includes("&beforeFirstRelation") && !k["&beforeFirstRelation"] && (k["&beforeFirstRelation"] = !0, d[2] = "&" + d[2]), b = new $(0, d[0], c, null, t), q = new $(0, d[1], c, null, t), f = new $(0, d[2], c, null, t), a && (a = Pe(b.value, a, t), b = a, b.key = c, a = void 0), h == "space" && l.length > 0) {
             o.value = d[0], f.key = l[0][0].children[0].key, l[0][0].insertNode(f), o = l[0][0].children[l[0][0].children.length - 1], l[0][1]--, l[0][1] == 0 && l.shift();
             break;
           }
           let v = !0;
-          (U(c) || D(c)) && (h != "space" && d[0].length == 0 || u[b - 1]) && u[m + 1] && u[b - 1] != " " && u[m + 1] != " " && (v = !1);
+          (U(c) || D(c)) && (h != "space" && d[0].length == 0 || u[g - 1]) && u[m + 1] && u[g - 1] != " " && u[m + 1] != " " && (v = !1);
           let w = I(c), M = !1;
-          h != "space" && s[c].script && (w -= 0.1, v && (M = !0, g.exPriority = !0, q.exPriority = !0, f.exPriority = !0), v || (v = !0), Be(o, c) && (v = !1));
+          h != "space" && s[c].script && (w -= 0.1, v && (M = !0, b.exPriority = !0, q.exPriority = !0, f.exPriority = !0), v || (v = !0), Be(o, c) && (v = !1));
           let T = 0;
           if (o.exPriority && !M && (T += 0.2), v && (o.noPriority || w + T < I(o.key))) {
             let P = !1;
-            for (o.value = g.value, o.children = g.children, o.pair = g.pair, o.exPriority = g.exPriority, o.noPriority = g.noPriority; o.parent; ) {
+            for (o.value = b.value, o.children = b.children, o.pair = b.pair, o.exPriority = b.exPriority, o.noPriority = b.noPriority; o.parent; ) {
               let A = o.position;
               if (o = o.parent, T = 0, !M) {
                 for (let _ of o.children)
@@ -3223,14 +3224,14 @@ function j(i, e, t) {
               r.root.key = c, A.insertNode(r.root), A.insertNode(q), A.insertNode(f), r.root = A, o = r.root.children[2];
             }
           } else
-            v || (g.noPriority = !0, q.noPriority = !0, f.noPriority = !0), o.value = "", o.insertNode(g), o.insertNode(q), o.insertNode(f), o = o.children[2];
+            v || (b.noPriority = !0, q.noPriority = !0, f.noPriority = !0), o.value = "", o.insertNode(b), o.insertNode(q), o.insertNode(f), o = o.children[2];
           break;
         //break case
         case "function":
-          d = [u.substring(0, b), c, u.substring(m + 1)], d[2][0] == " " && (d[2] = d[2].substring(1)), g = new $(0, d[0], c, null, t), q = new $(0, d[1], c, null, t), f = new $(0, d[2], c, null, t), a && (a = C(g.value, a, t), g = a, g.key = c, a = void 0);
+          d = [u.substring(0, g), c, u.substring(m + 1)], d[2][0] == " " && (d[2] = d[2].substring(1)), b = new $(0, d[0], c, null, t), q = new $(0, d[1], c, null, t), f = new $(0, d[2], c, null, t), a && (a = C(b.value, a, t), b = a, b.key = c, a = void 0);
           let L = new $();
           if (L.conversiontarget = t, L.value = "", L.insert(c, c), f.key = c, s[c].pairedArgument) {
-            let P = V(u, b, c, s[c].pairedArgument, s[c].family);
+            let P = V(u, g, c, s[c].pairedArgument, s[c].family);
             if (P != -1) {
               let A = [u.substring(m + 1, P), u.substring(P + 1)], _ = j(A[0].trim(), e, t)[0].root, N = new $(0, A[1], c, null, t);
               L.insertNode(_), L.insertNode(N);
@@ -3239,14 +3240,14 @@ function j(i, e, t) {
           } else
             L.insertNode(f);
           let O = o;
-          o = L.children[L.children.length - 1], g.value.length > 0 && (L = Ne(g, L)), L.value = "", O.parent ? (L.key = O.parent.children[O.position].key, L.position = O.position, L.parent = O.parent, O.parent.children[O.position] = L) : r.root = L, s[c] && s[c].extraArgument && l.push([L, s[c].extraArgument]);
+          o = L.children[L.children.length - 1], b.value.length > 0 && (L = Ne(b, L)), L.value = "", O.parent ? (L.key = O.parent.children[O.position].key, L.position = O.position, L.parent = O.parent, O.parent.children[O.position] = L) : r.root = L, s[c] && s[c].extraArgument && l.push([L, s[c].extraArgument]);
           break;
         case "postfix":
         // such as "!" for factorial.
         case "symbol":
         //symbols
         case "letter":
-          d = [u.substring(0, b), c, u.substring(m + 1)], console.debug("making a symbolNode with", d);
+          d = [u.substring(0, g), c, u.substring(m + 1)], console.debug("making a symbolNode with", d);
           let R = new $();
           if (R.conversiontarget = t, R.value = "", R.insert(c, c), R = C(d[0], R, t), a = Z(a, R, t), console.debug("now have stackedTreeNode", a), l.length > 0) {
             a.key = l[0][0].children[0].key;
@@ -3256,20 +3257,20 @@ function j(i, e, t) {
           o.value = d[2], console.debug("now have currentNode", o);
           break;
         case "multiline":
-          d = [u.substring(0, b), c, u.substring(m + 1)];
+          d = [u.substring(0, g), c, u.substring(m + 1)];
           let Y = new $(0, d[0], null, null, t);
           a = Z(a, Y, t), o.value = d[2], n = c, console.debug("----------- just set exParam = ", n);
           break;
         case "UNUSED":
-          d = [u.substring(0, b), c, u.substring(m + 1)], o.value = d[2];
+          d = [u.substring(0, g), c, u.substring(m + 1)], o.value = d[2];
           break;
       }
     } else {
       if (a) {
         if (u.trim() != "") {
           console.debug("388 M2TreeConvert  conversiontarget", t);
-          let g = new $();
-          g.conversiontarget = t, a.key = "", g.insertNode(a), g.insert("", ""), g.insert(u, ""), a = g;
+          let b = new $();
+          b.conversiontarget = t, a.key = "", b.insertNode(a), b.insert("", ""), b.insert(u, ""), a = b;
         }
         let d = o.position;
         a.position = d, a.key = o.key, o.parent ? (a.parent = o.parent, o.parent.children[d] = a) : r.root = a;
@@ -3429,9 +3430,9 @@ function Ie(i, e, t, r) {
   for (let k of S.getAllMultiLine()) {
     let u = i.indexOf(k.slice(0, -1) + "(");
     for (; u != -1; ) {
-      let b = Ve(i, u + k.length - 1, "(", ")");
-      if (b != -1) {
-        let y = [i.substring(0, u), i.substring(u + k.length, b), i.substring(b + 1)];
+      let g = Ve(i, u + k.length - 1, "(", ")");
+      if (g != -1) {
+        let y = [i.substring(0, u), i.substring(u + k.length, g), i.substring(g + 1)];
         newMiddleStr = k + `
  `, s[k].emptyLineBeforeIndent ? (newMiddleStr += y[1].replaceAll(";", `
 
@@ -3480,21 +3481,23 @@ function Ie(i, e, t, r) {
     }
     let k = j(n[0].trim(), l, r);
     console.debug("temp");
-    let u = k[0], b = k[1], y = je(u, l), m = "";
-    l.length && l.includes("caseEnvironment") ? (m = "cases", r == "MathML" || r == "Speech" && (y = " case " + y)) : l.length && (l.includes("system") || l.includes("derivation") || l.includes("align")) && (l.includes("system") ? m = "system" : l.includes("derivation") ? m = "derivation" : l.includes("align") && (m = "align"), r == "MathML" || r == "Speech" && (y = " line " + y)), n.length > 0 && b.length == 0 && (p.length > 0 && (!s[p[0]].absorbEmptyLine || n[0].trim().length > 0) ? s[p[0]].absorbEmptyLine && n.length > 1 && n[1].trim().length > 0 || n.length == 2 && n[1].trim().length == 0 || n.length == 1 || (s[p[0]].changeLineTurn ? y += s[p[0]].changeLineTurn + `
+    let u = k[0], g = k[1], y = je(u, l), m = "";
+    l.length && l.includes("caseEnvironment") ? (m = "cases", r == "MathML" || r == "Speech" && (y = " case " + y)) : l.length && (l.includes("system") || l.includes("derivation") || l.includes("align")) && (l.includes("system") ? m = "system" : l.includes("derivation") ? m = "derivation" : l.includes("align") && (m = "align"), r == "MathML" || r == "Speech" && (y = " line " + y)), n.length > 0 && g.length == 0 && (p.length > 0 && (!s[p[0]].absorbEmptyLine || n[0].trim().length > 0) ? s[p[0]].absorbEmptyLine && n.length > 1 && n[1].trim().length > 0 || n.length == 2 && n[1].trim().length == 0 || n.length == 1 || (s[p[0]].changeLineTurn ? y += s[p[0]].changeLineTurn + `
 ` : r == "MathML" || (r == "Speech" ? (m == "cases" && (y += ` end_case
 `), (m == "system" || m == "derivation" || m == "align") && (y += ` end_line
 `)) : y += "")) : n.length > 1 && (s[p[0]] && s[p[0]].absorbEmptyLine && n[0].trim().length == 0 || (y += `
-`))), a = n[0], n.shift(), s[b] && (s[b].seperateOut && (y += t), s[b].noBeginEnd ? y += s[b].note + "{" : r == "MathML" ? (b == "cases:" && (y += '<mrow intent="$table"><mo>{</mo>'), y += '<mtable arg="table" intent=":' + s[b].MathMLnote + `">
-`) : r == "Speech" ? y += " begin-" + s[b].speechnote + " " : y += `
-<` + s[b].note + `>
-`, p.push(b)), p.length > 0 && n[0] && n[0][0] != " " && (!s[p[0]].emptyLineBeforeIndent || a.trim().length == 0) && (s[p[0]].noBeginEnd ? y += "}" : y += "AA\\end{" + s[p[0]].note + "}", s[p[0]].lineBreak && (y += `
+`))), a = n[0], n.shift(), s[g] && (s[g].seperateOut && (y += t), s[g].noBeginEnd ? y += s[g].note + "{" : r == "MathML" ? (g == "cases:" && (y += '<mrow intent="$table"><mo>{</mo>'), y += '<mtable arg="table" intent=":' + s[g].MathMLnote + `">
+`) : r == "Speech" ? y += " begin-" + s[g].speechnote + " " : g == "cases:" ? y += "\\begin{" + s[g].note + `}
+` : y += `
+<` + s[g].note + `>
+`, p.push(g)), p.length > 0 && n[0] && n[0][0] != " " && (!s[p[0]].emptyLineBeforeIndent || a.trim().length == 0) && (s[p[0]].noBeginEnd ? y += "}" : y += "AA\\end{" + s[p[0]].note + "}", s[p[0]].lineBreak && (y += `
 `), s[p[0]].seperateOut && (y += e), p.shift()), o += y;
   }
   for (; p.length > 0; )
     s[p[0]].noBeginEnd ? o += "}" : r == "MathML" ? (o += "</mtable><!-- " + s[p[0]].MathMLnote + ` -->
 `, l.length && l.includes("caseEnvironment") && (o += `</mrow>
-`)) : r == "Speech" ? (s[p[0]].note == "cases" && (o += "end_case "), s[p[0]].note == "align" && (o += "end_line "), o += "end-" + s[p[0]].speechnote) : o += "</" + s[p[0]].note + `>
+`)) : r == "Speech" ? (s[p[0]].note == "cases" && (o += "end_case "), s[p[0]].note == "align" && (o += "end_line "), o += "end-" + s[p[0]].speechnote) : l.length && l.includes("caseEnvironment") ? o += "\\end{" + s[p[0]].note + `}
+` : o += "</" + s[p[0]].note + `>
 `, s[p[0]].seperateOut && (o += e), p.shift();
   return ie(o);
 }

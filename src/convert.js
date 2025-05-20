@@ -132,14 +132,14 @@ function convertPieces(pieces, conversiontarget) {
 
 // like convert2, except no delimiters because we have alread separated the math
 export function convertMathSnippet(str, conversiontarget) {
-//console.log("starting convertMathSnippet", conversiontarget, "on", str);
+// console.log("starting convertMathSnippet", conversiontarget, "on", str);
     str = str.replace(/(&|\\amp)/g, "🎯");   // for alignment.  Can't use & because of xml later
-//console.log("continuing convertMathSnippet", conversiontarget, "on", str);
+// console.log("continuing convertMathSnippet", conversiontarget, "on", str);
     str = str.replace(/REtuRn/g, "\n");  
-//console.log("recontinuing convertMathSnippet", conversiontarget, "on", str);
+// console.log("recontinuing convertMathSnippet", conversiontarget, "on", str);
     let convertedStr = M2LConvert(str,"LBRACK","RBRACK", conversiontarget);
     convertedStr = simplifyAnswer(convertedStr);
-//console.log("returning", convertedStr);
+// console.log("returning", convertedStr);
     return convertedStr
 }
 

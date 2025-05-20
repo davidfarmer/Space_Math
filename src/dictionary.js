@@ -2226,7 +2226,7 @@ export var dictionary = {
     },
     "extraArgument": 2,
     "rule": {
-      "1,4": "#2 & \\text{ #3 } #4"
+      "1,4": "#2 & \\text{ #3 } #4\\\\\n"
     },
     "speech": {
       "1,4": "#2 #3 #4 "
