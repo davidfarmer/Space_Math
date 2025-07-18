@@ -3549,6 +3549,7 @@ function Qe(i, e) {
 function Xe(i, e) {
   let t = {};
   for (const r of i) {
+    console.log("converting", r, " of ", i);
     const n = r[0], o = r[3] + "," + e;
     if (n == "text")
       t[o] = [r[0], r[1], r[2]];

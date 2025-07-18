@@ -101,6 +101,7 @@ function convertPieces(pieces, conversiontarget) {
   let converted_component = {};
 
   for (const piece of pieces) {
+console.log("converting", piece, " of ", pieces);
     const piece_type = piece[0];
     const contentkey = piece[3] + "," + conversiontarget;
     if (piece_type == "text") { converted_component[contentkey] = [piece[0], piece[1], piece[2]] }
