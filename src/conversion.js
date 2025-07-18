@@ -246,26 +246,26 @@ console.debug("now ans", ans);
 // convert common constructions to functional or infix notation,
 // so that the existing tree structures can be used.
 
-export function preprocess(rawstring) {
+export function mathpreprocess(rawstring) {
     let str = rawstring;
 
-    str = preprocessquotes(str);
-    str = preprocessarithmetic(str);
-console.debug("after preprocessarithmetic", str);
-    str = preprocessparentheses(str);
-    str = preprocessbrackets(str);
+    str = mathpreprocessquotes(str);
+    str = mathpreprocessarithmetic(str);
+console.debug("after mathpreprocessarithmetic", str);
+    str = mathpreprocessparentheses(str);
+    str = mathpreprocessbrackets(str);
 //next two are called in preprocessarithmetic
 //    str = preprocessintegrals(str);
 //    str = preprocesslargeoperators(str);
 
 console.debug("before other", str);
-    str = preprocessother(str);
+    str = mathpreprocessother(str);
 console.debug("after other", str);
 
     return str
 }
 
-function preprocessquotes(rawstring) {
+function mathpreprocessquotes(rawstring) {
     let str = rawstring;
 
 //    str = str.replace(/(\s)"(\S[^"]+)"(\s|$)/g, '$1quote($2)$3');
@@ -277,7 +277,7 @@ function wrapquotes(match, before, thequote, after, offset, string) {
     return before + "quote(␣" + thequote.replaceAll(" ", "␣") + "␣)" + after
 }
 
-function preprocessarithmetic(rawstring) {
+function mathpreprocessarithmetic(rawstring) {
     let str = rawstring;
 
     str = str.replace(/-->/g, 'longrightarrow');
@@ -305,7 +305,7 @@ function preprocessarithmetic(rawstring) {
 //    str = str.replace(/\/([^ \(\[{\/][^ \(\)\[\]\{\}\$]*)/g, '/❲$1❳');  // denominator
 // greedy denominator.  When does that fail?
     str = str.replace(/\/([^ \(\[{\/][^ \)\]\}\n\$]*)/g, '/❲$1❳');  // denominator
-console.debug("after preprocess fractions", "A" + str + "B");
+console.debug("after mathpreprocess fractions", "A" + str + "B");
 
 // wrap argument of greedy function in fake parentheses
     for (const symbolname of greedyfunctions) {
@@ -319,13 +319,13 @@ console.debug("after preprocess fractions", "A" + str + "B");
     }
 console.debug("after wrapping greedy arguments", "A" + str + "B");
 
-// need to preprocess integrals, summation, etc, before wrapping bases
+// need to mathpreprocess integrals, summation, etc, before wrapping bases
 // (but we gave up on wrapping bases)
 
-    str = preprocessderivatives(str);
+    str = mathpreprocessderivatives(str);
 console.debug("before operators", str);
-    str = preprocessintegrals(str);
-    str = preprocesslargeoperators(str);
+    str = mathpreprocessintegrals(str);
+    str = mathpreprocesslargeoperators(str);
 console.debug("after operators", str);
 
 // not so fast!
@@ -351,7 +351,7 @@ console.debug("after exponents twice", str);
 console.debug("after subscript twice", str);
 
 // do after the implied grouping for exponents
-    str = preprocessfunctionpowers(str);
+    str = mathpreprocessfunctionpowers(str);
 
 //Is this too late? An issue is e^2x+5
 // number-group might not be multiplicaiton, as in  J_0(x)
@@ -379,7 +379,7 @@ console.debug("after implied number letter multiplication", str);
     return str
 }
 
-function preprocessparentheses(rawstring) {
+function mathpreprocessparentheses(rawstring) {
     let str = rawstring;
 
     str = str.replace(/(\$| )\(([^,()]+)\, +([^,()]+)\)/g, '$1($2) oointerval ($3)');  //open interval
@@ -390,7 +390,7 @@ function preprocessparentheses(rawstring) {
     return str
 }
 
-function preprocessbrackets(rawstring) {
+function mathpreprocessbrackets(rawstring) {
     let str = rawstring;
 
 // there are several construtions of the form
@@ -418,7 +418,7 @@ console.debug("did we find vector?", str);
     return str
 }
 
-function preprocessderivatives(rawstring) {
+function mathpreprocessderivatives(rawstring) {
 //  need special case for \sum'
 // also limits
     let str = rawstring;
@@ -431,7 +431,7 @@ function preprocessderivatives(rawstring) {
     return str
 }
 
-function preprocessintegrals(rawstring) {
+function mathpreprocessintegrals(rawstring) {
     let str = rawstring;
 
 //    str = str.replace(/(\$| )intr\_\(([^()]+)\)\^\(([^()]+)\) ?(.*?) d([a-z])( |\$)/g, '$1limop(∫)($2)($3)($4)($5)$6');
@@ -500,7 +500,7 @@ console.debug("did we find integral?", str);
     return str
 }
 
-function preprocessfunctionpowers(rawstring) {
+function mathpreprocessfunctionpowers(rawstring) {
     let str = rawstring;
 // this is for "known" funcitons like log and sin.
 // generic functions, like f^2(x), are handled differently
@@ -545,7 +545,7 @@ console.debug("processed powers of functions", str);
     return str
 }
 
-function preprocesslargeoperators(rawstring) {
+function mathpreprocesslargeoperators(rawstring) {
     let str = rawstring;
 
 // extract sum, prod, and other big tsings with limits
@@ -585,7 +585,7 @@ console.debug("regExStr for llimop", regExStr);
 // no limits
          regExStr = "(^|\\$| )" + symbolname + "( |\\$)";
     // for now assume no spaces in the summand
- // idea: try only preprocessing the limits, and let the parsing code
+ // idea: try only mathpreprocessing the limits, and let the parsing code
  // handle the summand
 console.debug("regExStr", regExStr);
          regEx = new RegExp(regExStr, "g");
@@ -596,7 +596,7 @@ console.debug("regExStr", regExStr);
     return str
 }
 
-function preprocessother(rawstring) {
+function mathpreprocessother(rawstring) {
     let str = rawstring;
 
     str = str.replace(/([^ \$\(\)\[\]\{\}]+):([^ ]+) to ([^ \$\(\)\[\]\{\}]+)/g,

@@ -7,7 +7,7 @@ Description: the major abstract function which takes the user input and return t
 2022.10.25 refined to support MathJax
 2022.10.26 add conversiontarget to support both cases
 */
-import {hide_xml, unhide_xml, separatePieces, assemble, postprocess, preprocess, simplifyAnswer} from './conversion.js'
+import {hide_xml, unhide_xml, separatePieces, assemble, postprocess, mathpreprocess, simplifyAnswer} from './conversion.js'
 import {M2LConvert} from './M2LConvert.js'
 import {TranslateTable} from './TranslateTable.js'
 
@@ -109,7 +109,7 @@ function convertPieces(pieces, conversiontarget) {
       if (piece_type == "m" || piece_type == "md") {
           let thiscontentpiece = piece[2];
           thiscontentpiece = unhide_xml(thiscontentpiece);
-          thiscontentpiece = preprocess(thiscontentpiece);
+          thiscontentpiece = mathpreprocess(thiscontentpiece);
   //        converted_component[contentkey] = [piece[0], piece[1],convertMathSnippet(piece[2], conversiontarget)]
           converted_component[contentkey] = [piece[0], piece[1],convertMathSnippet(thiscontentpiece, conversiontarget)]
       } else {
