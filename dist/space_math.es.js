@@ -2790,7 +2790,7 @@ function ae(i) {
 }
 function se(i) {
   let e = i;
-  return e = pe(e), e = ce(e), console.debug("after preprocessarithmetic", e), e = me(e), e = he(e), console.debug("before other", e), e = be(e), console.debug("after other", e), e;
+  return e = pe(e), e = ce(e), console.debug("after mathpreprocessarithmetic", e), e = me(e), e = he(e), console.debug("before other", e), e = be(e), console.debug("after other", e), e;
 }
 function pe(i) {
   let e = i;
@@ -2801,7 +2801,7 @@ function ue(i, e, t, r, n, o) {
 }
 function ce(i) {
   let e = i;
-  e = e.replace(/-->/g, "longrightarrow"), e = e.replace(/->/g, "to"), e = e.replace(/<--/g, "longleftarrow"), e = e.replace(/<-/g, "from"), e = e.replace(/(\$| |\(|\^|_)[\-\−]([^ +])/g, "$1😑$2"), e = e.replace(/(^|\$|\(|\[|\{) *[\-\−]/, "$1😑"), e = e.replace(/([^ \(\)\[\]\{\}\$]*[+\-][^ \(\)\[\]\{\}\$]*[^ \)\]}\/])(\/\/)/g, "($1)//"), e = e.replace(/\/\/([^ \(\[{\/][^ \(\)\[\]\{\}\$]*[+\-][^ \(\)\[\]\{\}\$]*)/g, "//($1)"), e = e.replace(/([^ \(\)\[\]\{\}\$]*[^ \)\]}\/])(\/)/g, "❲$1❳/"), e = e.replace(/\/([^ \(\[{\/][^ \)\]\}\n\$]*)/g, "/❲$1❳"), console.debug("after preprocess fractions", "A" + e + "B");
+  e = e.replace(/-->/g, "longrightarrow"), e = e.replace(/->/g, "to"), e = e.replace(/<--/g, "longleftarrow"), e = e.replace(/<-/g, "from"), e = e.replace(/(\$| |\(|\^|_)[\-\−]([^ +])/g, "$1😑$2"), e = e.replace(/(^|\$|\(|\[|\{) *[\-\−]/, "$1😑"), e = e.replace(/([^ \(\)\[\]\{\}\$]*[+\-][^ \(\)\[\]\{\}\$]*[^ \)\]}\/])(\/\/)/g, "($1)//"), e = e.replace(/\/\/([^ \(\[{\/][^ \(\)\[\]\{\}\$]*[+\-][^ \(\)\[\]\{\}\$]*)/g, "//($1)"), e = e.replace(/([^ \(\)\[\]\{\}\$]*[^ \)\]}\/])(\/)/g, "❲$1❳/"), e = e.replace(/\/([^ \(\[{\/][^ \)\]\}\n\$]*)/g, "/❲$1❳"), console.debug("after mathpreprocess fractions", "A" + e + "B");
   for (const o of z) {
     var t = "(^|[ \\(\\[\\{])" + o + " ([^ \\(\\)\\[\\]\\{\\}]+)", r = t + "($|[ \\(\\)\\[\\]\\{\\}])", n = new RegExp(r, "g");
     e = e.replace(n, "$1" + o + "⁅$2⁆$3");
