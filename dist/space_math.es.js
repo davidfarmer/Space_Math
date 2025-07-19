@@ -3556,7 +3556,7 @@ function Xe(i, e) {
     else if (!(o in t))
       if (n == "m" || n == "md") {
         let p = r[2];
-        p = we(p), p = se(p), t[o] = [r[0], r[1], Fe(p, e)];
+        p = we(p), p = preprocess(p), t[o] = [r[0], r[1], Fe(p, e)];
       } else
         console.error("unknown piece_type", r);
   }
@@ -3565,8 +3565,8 @@ function Xe(i, e) {
 function Fe(i, e) {
   i = i.replace(/(&|\\amp)/g, "🎯"), i = i.replace(/REtuRn/g, `
 `);
-  let t = Ie(i, "LBRACK", "RBRACK", e);
-  return t = ae(t), t;
+  let t = se(i);
+  return t = Ie(t, "LBRACK", "RBRACK", e), t = ae(t), t;
 }
 function Ve(i, e, t, r) {
   if (i.substring(e, e + t.length) != t)
