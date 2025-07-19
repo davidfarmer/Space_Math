@@ -25,9 +25,6 @@ console.debug("str_separated", str_separated);
   let convertedComponent = convertPieces(str_separated, conversiontarget);
 
 console.debug("firsttest", convertedComponent);
-/*
-console.debug("test",convertMathSnippet("x^447","MathML"));
-*/
 
   let answer_processed = assemble(str_separated, convertedComponent,conversiontarget);
 
@@ -58,6 +55,8 @@ Description: use BNF grammar to split user input into text and math part, call M
 2022.10.26 modified to support none-symmetry shape.
 2022.10.28 modified to support case when user types one half of deliminator
 */
+
+// UNUSED
 function convert2(str,p, conversiontarget) {
 console.debug("starting conversiontarget", conversiontarget, p, "on", str);
   let splitStr = [];
@@ -96,6 +95,8 @@ console.debug("convertedStr", convertedStr);
   }
 }
 
+
+// UNUSED
 function convertPieces(pieces, conversiontarget) {
 
   let converted_component = {};
@@ -110,8 +111,7 @@ console.log("converting", piece, " of ", pieces);
       if (piece_type == "m" || piece_type == "md") {
           let thiscontentpiece = piece[2];
           thiscontentpiece = unhide_xml(thiscontentpiece);
-          thiscontentpiece = mathpreprocess(thiscontentpiece);
-  //        converted_component[contentkey] = [piece[0], piece[1],convertMathSnippet(piece[2], conversiontarget)]
+          thiscontentpiece = preprocess(thiscontentpiece);
           converted_component[contentkey] = [piece[0], piece[1],convertMathSnippet(thiscontentpiece, conversiontarget)]
       } else {
         console.error("unknown piece_type", piece)
@@ -138,7 +138,8 @@ export function convertMathSnippet(str, conversiontarget) {
 // console.log("continuing convertMathSnippet", conversiontarget, "on", str);
     str = str.replace(/REtuRn/g, "\n");  
 // console.log("recontinuing convertMathSnippet", conversiontarget, "on", str);
-    let convertedStr = M2LConvert(str,"LBRACK","RBRACK", conversiontarget);
+    let convertedStr = mathpreprocess(str);
+    convertedStr = M2LConvert(convertedStr,"LBRACK","RBRACK", conversiontarget);
     convertedStr = simplifyAnswer(convertedStr);
 // console.log("returning", convertedStr);
     return convertedStr
